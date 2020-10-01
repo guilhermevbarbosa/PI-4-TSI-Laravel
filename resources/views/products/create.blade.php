@@ -5,6 +5,20 @@
         </h2>
     </x-slot>
 
+    @if($errors->any())
+    <div class="max-w-2xl mx-auto mt-4" role="alert">
+        <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+            Erro!
+        </div>
+
+        <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+            @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
     <form method="POST" class="max-w-2xl px-6 py-6 bg-white shadow-2xl mt-6 rounded-md mx-auto"
         action="{{ route('products.store') }}" enctype="multipart/form-data">
         @csrf
@@ -13,14 +27,14 @@
             <label class='uppercase text-teal-700 font-bold text-base' for="name">Nome</label>
             <input type="text"
                 class="w-full bg-gray-200 text-gray-800 rounded py-2 px-2 focus:bg-gray-100 focus:outline-none"
-                name="name" placeholder="Digite o nome do produto">
+                name="name" placeholder="Digite o nome do produto" value="{{ old('name') }}">
         </div>
 
         <div class="w-full mb-6">
             <label class='uppercase text-teal-700 font-bold text-base' for="description">Descrição</label>
             <textarea type="text" name="description"
                 class="w-full bg-gray-200 text-gray-800 rounded py-2 px-2 focus:bg-gray-100 focus:outline-none"
-                placeholder="Digite a descrição"></textarea>
+                placeholder="Digite a descrição">{{ old('description') }}</textarea>
         </div>
 
         <div class="flex">
@@ -28,27 +42,28 @@
                 <label class='uppercase text-teal-700 font-bold text-base' for="price">Preço</label>
                 <input type="number"
                     class="w-full bg-gray-200 text-gray-800 rounded py-2 px-2 focus:bg-gray-100 focus:outline-none"
-                    name="price" placeholder="Em R$">
+                    name="price" placeholder="Em R$" value="{{ old('price') }}">
             </div>
 
             <div class="w-1/3 px-3 mb-6">
                 <label class='uppercase text-teal-700 font-bold text-base' for="discount">Desconto</label>
                 <input type="number"
                     class="w-full bg-gray-200 text-gray-800 rounded py-2 px-2 focus:bg-gray-100 focus:outline-none"
-                    name="discount" placeholder="Em %">
+                    name="discount" placeholder="Em %" value="{{ old('discount') }}">
             </div>
 
             <div class="w-1/3 pl-3 mb-6">
                 <label class='uppercase text-teal-700 font-bold text-base' for="stock">Estoque</label>
                 <input type="number"
                     class="w-full bg-gray-200 text-gray-800 rounded py-2 px-2 focus:bg-gray-100 focus:outline-none"
-                    name="stock" placeholder="Quantidade">
+                    name="stock" placeholder="Quantidade" value="{{ old('stock') }}">
             </div>
         </div>
 
         <div class="w-full mb-6">
             <label class='uppercase text-teal-700 font-bold text-base' for="image">Imagem</label>
-            <input class="w-full bg-gray-200 rounded py-2 px-2" type="file" name="image" id="image" accept="image/png, image/jpeg, image/jpg">
+            <input class="w-full bg-gray-200 rounded py-2 px-2" type="file" name="image" id="image"
+                accept="image/png, image/jpeg, image/jpg">
         </div>
 
         <div class="flex mt-6">

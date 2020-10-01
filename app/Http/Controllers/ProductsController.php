@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Http\Requests\CreateProductRequest;
 
 class ProductsController extends Controller
 {
@@ -18,7 +19,7 @@ class ProductsController extends Controller
         return view('products.create');
     }
 
-    public function store(Request $request)
+    public function store(CreateProductRequest  $request)
     {
         $file = $request->file("image");
         $base64Img = "";
