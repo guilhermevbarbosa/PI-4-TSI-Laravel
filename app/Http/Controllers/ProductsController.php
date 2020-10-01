@@ -44,7 +44,7 @@ class ProductsController extends Controller
 
     public function show($id)
     {
-        //
+        return response()->json(Product::find($id));
     }
 
     public function edit($id)
@@ -59,6 +59,9 @@ class ProductsController extends Controller
 
     public function destroy($id)
     {
-        //
+        $produto = Product::find($id);
+        $produto->delete();
+        session()->flash('success', 'Produto deletado com sucesso!');
+        return redirect(route('products.index'));
     }
 }

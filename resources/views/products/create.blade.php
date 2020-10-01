@@ -48,7 +48,7 @@
 
         <div class="w-full mb-6">
             <label class='uppercase text-teal-700 font-bold text-base' for="image">Imagem</label>
-            <input  type="file" name="image" id="image" accept="image/png, image/jpeg, image/jpg">
+            <input class="w-full bg-gray-200 rounded py-2 px-2" type="file" name="image" id="image" accept="image/png, image/jpeg, image/jpg">
         </div>
 
         <div class="flex mt-6">
