@@ -6,7 +6,7 @@
     </x-slot>
 
     <form method="POST" class="max-w-2xl px-6 py-6 bg-white shadow-2xl mt-6 rounded-md mx-auto"
-        action="{{ route('products.store') }}">
+        action="{{ route('products.store') }}" enctype="multipart/form-data">
         @csrf
 
         <div class="w-full mb-6">
@@ -48,7 +48,7 @@
 
         <div class="w-full mb-6">
             <label class='uppercase text-teal-700 font-bold text-base' for="image">Imagem</label>
-            <input type="file" class="w-full bg-gray-200 rounded py-2 px-2" name="image" value="null">
+            <input  type="file" name="image" id="image" accept="image/png, image/jpeg, image/jpg">
         </div>
 
         <div class="flex mt-6">
