@@ -26,7 +26,7 @@
                     <td class="px-4 py-4 w-full">
                         <div class="flex">
                             <div class="">
-                                <img src="http://via.placeholder.com/50" class="rounded-full h-10 w-10">
+                                <img src="{{$product->image}}" class="h-10 w-10">
                             </div>
                             <div class="ml-4">
                                 <span class="block">{{ $product->name }}</span>

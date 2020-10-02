@@ -5,34 +5,80 @@
         </h2>
     </x-slot>
 
-    <form method="POST" class="max-w-7xl px-4 py-4 bg-white shadow mt-4 rounded-md mx-auto"
-        action="{{route('products.update',$product->id)}}">
+    @if($errors->any())
+    <div class="max-w-2xl mx-auto mt-4" role="alert">
+        <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+            Erro!
+        </div>
+
+        <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+            @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
+    <form method="POST" class="max-w-2xl px-6 py-6 bg-white shadow-2xl mt-6 rounded-md mx-auto"
+        action="{{route('products.update',$product->id)}}" enctype="multipart/form-data">
         @method('PUT')
         @csrf
-        <div class="w-full">
-            <label class='uppercase text-gray-700 font-bold text-sm' for="name">Nome:</label>
+
+        <div class="w-full mb-6">
+            <label class='uppercase text-teal-700 font-bold text-base' for="name">Nome</label>
             <input type="text"
-                class="w-full bg-gray-100 text-gray-700 rounded py-2 px-2 focus:bg-gray-50 focus:outline-none"
-                name="name" value="{{$product->name}}">
+                class="w-full bg-gray-200 text-gray-800 rounded py-2 px-2 focus:bg-gray-100 focus:outline-none"
+                name="name" placeholder="Digite o nome do produto" value="{{$product->name}}">
         </div>
 
-        <div class="w-full">
-            <label for="description">Descrição:</label>
+        <div class="w-full mb-6">
+            <label class='uppercase text-teal-700 font-bold text-base' for="description">Descrição</label>
             <textarea type="text" name="description"
-                class="w-full bg-gray-100 text-gray-700 rounded py-2 px-2 focus:bg-gray-50 focus:outline-none">{{$product->description}}</textarea>
+                class="w-full bg-gray-200 text-gray-800 rounded py-2 px-2 focus:bg-gray-100 focus:outline-none">{{$product->description}}</textarea>
         </div>
 
-        <div class="w-full">
-            <label for="price">Preço:</label>
-            <input type="number"
-                class="w-full bg-gray-100 text-gray-700 rounded py-2 px-2 focus:bg-gray-50 focus:outline-none"
-                name="price" value="{{$product->price}}" placeholder="Digite o valor em reais">
+        <div class="flex">
+            <div class="w-1/3 pr-3 mb-6">
+                <label class='uppercase text-teal-700 font-bold text-base' for="price">Preço</label>
+                <input type="number"
+                    class="w-full bg-gray-200 text-gray-800 rounded py-2 px-2 focus:bg-gray-100 focus:outline-none"
+                    name="price" placeholder="Em R$" value="{{ $product->price }}">
+            </div>
+
+            <div class="w-1/3 px-3 mb-6">
+                <label class='uppercase text-teal-700 font-bold text-base' for="discount">Desconto</label>
+                <input type="number"
+                    class="w-full bg-gray-200 text-gray-800 rounded py-2 px-2 focus:bg-gray-100 focus:outline-none"
+                    name="discount" placeholder="Em %" value="{{ $product->discount }}">
+            </div>
+
+            <div class="w-1/3 pl-3 mb-6">
+                <label class='uppercase text-teal-700 font-bold text-base' for="stock">Estoque</label>
+                <input type="number"
+                    class="w-full bg-gray-200 text-gray-800 rounded py-2 px-2 focus:bg-gray-100 focus:outline-none"
+                    name="stock" placeholder="Quantidade" value="{{ $product->stock }}">
+            </div>
         </div>
 
-        <div class="flex justify-end mt-4">
+
+        <div class="w-full mb-6">
+            <label class='uppercase text-teal-700 font-bold text-base' for="image">Imagem atual</label>
+
+            <img src="{{$product->image}}">
+        </div>
+
+        <div class="w-full mb-6">
+            <label class='uppercase text-teal-700 font-bold text-base' for="image">Atualizar imagem</label>
+
+            <input class="w-full bg-gray-200 rounded py-2 px-2" type="file" name="image" id="image"
+                accept="image/png, image/jpeg, image/jpg">
+        </div>
+
+        <div class="flex mt-6">
             <button type="submit"
-                class="bg-green-500 hover:bg-green-700 text-white font-bold text-xl py-2 px-4 rounded-md shadow">Editar
-                Produto</button>
+                class="w-full bg-teal-500 hover:bg-teal-600 text-white font-bold text-xl py-2 px-4 rounded-md shadow-lg focus:outline-none">
+                Editar Produto
+            </button>
         </div>
     </form>
 </x-app-layout>
