@@ -30,7 +30,7 @@
                             </div>
                             <div class="ml-4">
                                 <span class="block">{{ $product->name }}</span>
-                                <span class="block text-gray-500 text-sm">Categ</span>
+                                <span class="block text-gray-500 text-sm">{{ $product->Category->name }}</span>
                             </div>
                         </div>
                     </td>

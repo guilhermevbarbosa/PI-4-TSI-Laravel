@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Category;
 
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\EditProductRequest;
@@ -18,7 +18,7 @@ class ProductsController extends Controller
 
     public function create()
     {
-        return view('products.create');
+        return view('products.create')->with('categories', Category::all());
     }
 
     public function store(CreateProductRequest $request)
@@ -35,7 +35,8 @@ class ProductsController extends Controller
             'image' => $base64Img,
             'price' => $request->price,
             'discount' => $request->discount,
-            'stock' => $request->stock
+            'stock' => $request->stock,
+            'category_id' => $request->category_id
         ]);
 
         session()->flash('success', 'Produto criado com sucesso!');
