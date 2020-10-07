@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\CategoriesController;
 
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
@@ -14,3 +15,4 @@ Route::get('/', function () {
 });
 
 Route::resource('/products', ProductsController::class);
+Route::resource('/categories', CategoriesController::class);
