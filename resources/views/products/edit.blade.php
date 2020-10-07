@@ -60,6 +60,16 @@
             </div>
         </div>
 
+        <div class="w-full mb-6">
+            <label class='uppercase text-teal-700 font-bold text-base' for="category_id">Categoria</label>
+            <select class="w-full bg-gray-200 rounded py-2 px-2" name="category_id">
+                @foreach ($categories as $category)
+                <option value="{{$category->id}}" @if ($category->id == $product->Category->id) {{ 'selected' }}@endif>
+                    {{$category->name}}
+                </option>
+                @endforeach
+            </select>
+        </div>
 
         <div class="w-full mb-6">
             <label class='uppercase text-teal-700 font-bold text-base' for="image">Imagem atual</label>

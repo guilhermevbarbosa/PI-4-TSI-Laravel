@@ -50,7 +50,7 @@ class ProductsController extends Controller
 
     public function edit(Product $product)
     {
-        return view('products.edit')->with('product', $product);
+        return view('products.edit')->with('product', $product)->with('categories', Category::all());
     }
 
     public function update(EditProductRequest $request, Product $product)
@@ -72,7 +72,8 @@ class ProductsController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'discount' => $request->discount,
-            'stock' => $request->stock
+            'stock' => $request->stock,
+            'category_id' => $request->category_id
         ]);
 
         session()->flash('success', 'Produto editado com sucesso!');

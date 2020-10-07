@@ -24,7 +24,7 @@
                 @foreach($categories as $category)
                 <tr>
                     <td class="px-4 py-4 w-full">
-                        <span class="block">{{ $category->name }}</span>
+                        <span class="block">{{ $category->name }} ({{$category->products->count()}})</span>
                     </td>
 
                     <td class="px-4 py-4">
