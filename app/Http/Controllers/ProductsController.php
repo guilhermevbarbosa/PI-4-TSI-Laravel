@@ -16,12 +16,12 @@ class ProductsController extends Controller
         return view('products.index')->with('products', Product::all());
     }
 
-    public function create(Request $request)
+    public function create()
     {
         return view('products.create');
     }
 
-    public function store(CreateProductRequest  $request)
+    public function store(CreateProductRequest $request)
     {
         $file = $request->file("image");
 
@@ -82,6 +82,7 @@ class ProductsController extends Controller
     {
         $produto = Product::find($id);
         $produto->delete();
+
         session()->flash('success', 'Produto deletado com sucesso!');
         return redirect(route('products.index'));
     }
