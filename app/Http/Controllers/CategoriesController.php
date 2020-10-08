@@ -53,8 +53,15 @@ class CategoriesController extends Controller
     public function destroy($id)
     {
         $category = Category::find($id);
-        $category->delete();
 
+        $count = $category->Products->count();
+
+        if ($count) {
+            session()->flash('error', 'A categoria não pode ser deletada, há produtos cadastrados nela');
+            return redirect(route('categories.index'));
+        }
+
+        $category->delete();
         session()->flash('success', 'Categoria deletada com sucesso!');
         return redirect(route('categories.index'));
     }
