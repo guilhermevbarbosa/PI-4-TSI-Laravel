@@ -21,6 +21,18 @@ class APIController extends Controller
         return response()->json('Produtos não encontrados', 404);
     }
 
+    // Produtos pelo maior desconto
+    public function productsOrderByDiscount()
+    {
+        $products = Product::all()->sortByDesc('discount');
+
+        if ($products) {
+            return response()->json($products);
+        }
+
+        return response()->json('Produtos não encontrados', 404);
+    }
+
     // Get one product with id
     public function showProduct($id)
     {
@@ -31,6 +43,18 @@ class APIController extends Controller
         }
 
         return response()->json('Produto não encontrado', 404);
+    }
+
+    // Pesquisa por produto na barra de pesquisa
+    public function searchBarProduct($prodName)
+    {
+        $products = Product::selectRaw('products.*')->where('products.name', 'LIKE', '%' . $prodName . '%')->orderBy('name')->get();
+
+        if ($products->count() > 0) {
+            return response()->json($products);
+        }
+
+        return response()->json('Não há produtos encontrados com o termo pesquisado', 404);
     }
 
     // Get all categories
