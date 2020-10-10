@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -45,5 +46,47 @@ class APIUserController extends Controller
         ]);
 
         return response()->json($user);
+    }
+
+    // Cadastrar e atualizar endereço
+    public function handleAddress(Request $request, Address $add)
+    {
+        $loggedUser = $request->user()->id;
+
+        $search = Address::where('user_id', $loggedUser);
+
+        if ($search->count() > 0) {
+            $add->update([
+                'cep' => $request->cep,
+                'h_address' => $request->h_address,
+                'h_number' => $request->h_number,
+                'neighborhood' => $request->neighborhood,
+                'city' => $request->city,
+                'state' => $request->state,
+                'user_id' => $loggedUser,
+            ]);
+
+            return response()->json('Endereco Atualizado com sucesso');
+        } else {
+            $address = Address::create([
+                'cep' => $request->cep,
+                'h_address' => $request->h_address,
+                'h_number' => $request->h_number,
+                'neighborhood' => $request->neighborhood,
+                'city' => $request->city,
+                'state' => $request->state,
+                'user_id' => $loggedUser,
+            ]);
+
+            return response()->json($address);
+        }
+    }
+
+    // Retorno do endereço do usuário
+    public function getAddress(Request $request)
+    {
+        $address = $request->user()->Address;
+
+        return response()->json($address);
     }
 }

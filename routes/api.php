@@ -28,5 +28,7 @@ Route::get('/categories', [APIController::class, 'allCategories']);
 Route::get('/category/{id}', [APIController::class, 'showProductsInCategory']);
 
 // ROTAS PARA AUTENTICAR
-// Route::group(['middleware' => 'auth:sanctum'], function () {
-// });
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::post('/address', [APIUserController::class, 'handleAddress']);
+    Route::get('/address', [APIUserController::class, 'getAddress']);
+});
