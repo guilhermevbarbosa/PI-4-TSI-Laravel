@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Address;
-use Illuminate\Http\Request;
-
 use App\Models\Product;
 use App\Models\Category;
 

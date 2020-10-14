@@ -9,7 +9,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::resource('/products', ProductsController::class);
     Route::resource('/categories', CategoriesController::class);
 });
