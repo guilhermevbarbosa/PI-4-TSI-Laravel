@@ -27,6 +27,7 @@ class APIUserController extends Controller
 
         return response()->json([
             'user' => $user,
+            'permission' => $user->getRoleNames(),
             'token' => $user->createToken($request->device_name)->plainTextToken
         ]);
     }
