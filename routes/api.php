@@ -31,4 +31,5 @@ Route::get('/category/{id}', [APIController::class, 'showProductsInCategory']);
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/address', [APIUserController::class, 'handleAddress']);
     Route::get('/address', [APIUserController::class, 'getAddress']);
+    Route::post('/new-admin', [APIUserController::class, 'createAdmin']);
 });

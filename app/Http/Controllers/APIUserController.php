@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 use App\Models\User;
 
@@ -46,7 +45,31 @@ class APIUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $user->assignRole('client');
+
         return response()->json($user);
+    }
+
+    public function createAdmin(Request $request)
+    {
+        $loggedUser = $request->user();
+
+        if ($loggedUser->hasRole('admin')) {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+
+            $user->assignRole('admin');
+
+            return response()->json([
+                'user' => $user,
+                'permission' => $user->getRoleNames(),
+            ]);
+        }
+
+        return response()->json('Acesso negado', 303);
     }
 
     // Cadastrar e atualizar endereço
