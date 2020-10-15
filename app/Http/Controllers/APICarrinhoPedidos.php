@@ -82,4 +82,22 @@ class APICarrinhoPedidos extends Controller
 
         return response()->json("Produto removido do carrinho com sucesso");
     }
+
+    public function removeAllCart()
+    {
+        $userId = auth()->user()->id;
+        $this->deleteData($userId);
+
+        return response()->json("Carrinho limpo com sucesso");
+    }
+
+    private function deleteData(int $userId)
+    {
+        // REMOVE OS PRODUTOS DO CARRINHO DO CLIENTE
+        $prodsToRemove = Cart::all()->where('user_id', $userId);
+
+        foreach ($prodsToRemove as $actualProd) {
+            $actualProd->delete();
+        }
+    }
 }

@@ -37,4 +37,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/carrinho', [APICarrinhoPedidos::class, 'returnCart']);
     Route::post('/carrinho', [APICarrinhoPedidos::class, 'storeOneProductCart']);
     Route::post('/remove-prod', [APICarrinhoPedidos::class, 'destroyOneProductCart']);
+    Route::get('/clean-cart', [APICarrinhoPedidos::class, 'removeAllCart']);
 });
