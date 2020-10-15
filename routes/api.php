@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\APICarrinhoPedidos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,4 +33,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/address', [APIUserController::class, 'handleAddress']);
     Route::get('/address', [APIUserController::class, 'getAddress']);
     Route::post('/new-admin', [APIUserController::class, 'createAdmin']);
+
+    Route::get('/carrinho', [APICarrinhoPedidos::class, 'retornarCarrinho']);
 });

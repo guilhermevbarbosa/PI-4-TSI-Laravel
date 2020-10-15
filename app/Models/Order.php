@@ -24,9 +24,4 @@ class Order extends Model
     {
         return $this->hasMany(OrderProduct::class);
     }
-
-    public function formatData(int $data)
-    {
-        return date('d/m/y - H:i', $data);
-    }
 }
