@@ -34,5 +34,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/address', [APIUserController::class, 'getAddress']);
     Route::post('/new-admin', [APIUserController::class, 'createAdmin']);
 
-    Route::get('/carrinho', [APICarrinhoPedidos::class, 'retornarCarrinho']);
+    Route::get('/carrinho', [APICarrinhoPedidos::class, 'returnCart']);
+    Route::post('/carrinho', [APICarrinhoPedidos::class, 'storeOneProductCart']);
+    Route::post('/remove-prod', [APICarrinhoPedidos::class, 'destroyOneProductCart']);
 });
