@@ -29,6 +29,15 @@ class APIUserController extends Controller
         ]);
     }
 
+    public function logout(Request $request)
+    {
+        if ($request->user()->tokens()->delete()) {
+            return response()->json('Deslogado com sucesso');
+        } else {
+            return response()->json('Erro ao deslogar', 400);
+        }
+    }
+
     public function register(Request $request)
     {
         if (!$request->name || !$request->email || !$request->password) {
