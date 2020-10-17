@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\APIController;
+use App\Http\Controllers\APIOrders;
 use App\Http\Controllers\APIUserController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -34,11 +35,16 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::post('/address', [APIUserController::class, 'handleAddress']);
     Route::get('/address', [APIUserController::class, 'getAddress']);
+
     Route::post('/new-admin', [APIUserController::class, 'createAdmin']);
 
     Route::get('/carrinho', [APICarrinhoPedidos::class, 'returnCart']);
     Route::post('/carrinho', [APICarrinhoPedidos::class, 'storeOneProductCart']);
+    Route::get('/checkout', [APICarrinhoPedidos::class, 'checkout']);
+
     Route::post('/remove-prod', [APICarrinhoPedidos::class, 'destroyOneProductCart']);
     Route::get('/clean-cart', [APICarrinhoPedidos::class, 'removeAllCart']);
-    Route::get('/checkout', [APICarrinhoPedidos::class, 'checkout']);
+
+    Route::get('/my-orders', [APIOrders::class, 'getMyOrders']);
+    Route::get('/order/{id}', [APIOrders::class, 'showProductsInOrder']);
 });
