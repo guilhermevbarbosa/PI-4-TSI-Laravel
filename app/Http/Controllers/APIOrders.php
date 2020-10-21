@@ -40,7 +40,7 @@ class APIOrders extends Controller
 
         foreach ($orderProducts as $product) {
             // Pega o produto completo contido em Product
-            $clientProds[] = Product::all()->find($product->product_id);
+            $clientProds[] = Product::withTrashed()->find($product->product_id);
 
             // Pega o preço contido em OrderProduct
             $priceDB[] = $product->price;
