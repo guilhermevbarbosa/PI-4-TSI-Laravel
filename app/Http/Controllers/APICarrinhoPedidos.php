@@ -12,29 +12,29 @@ use App\Models\OrderProduct;
 
 class APICarrinhoPedidos extends Controller
 {
-    // **************
     public function returnCart()
     {
         $user = auth()->user();
         $cart = $user->cart;
 
         if ($cart->count() > 0) {
-            foreach ($cart as $product) {
-                $forProd = Product::all()->find($product->id);
-                $products[] = $forProd;
+            $products = [];
 
-                return response()->json($products);
+            foreach ($cart as $product) {
+                $forProd = Product::all()->find($product->product_id);
+                array_push($products, $forProd);
             }
+
+            return response()->json($products);
         } else {
-            return response()->json("Não há produtos no carrinho");
+            return response()->json(["error" => "Não há produtos no carrinho"], 400);
         }
     }
-    // **************
 
     public function storeOneProductCart(Request $request)
     {
         if (!$request->product_id) {
-            return response()->json("Requisição com corpo incompleto");
+            return response()->json(["error" => "Requisição com corpo incompleto"], 400);
         }
 
         $productIsValid = Product::all()->where('id', $request->product_id)->count();
@@ -51,7 +51,7 @@ class APICarrinhoPedidos extends Controller
                 $actualAmount = $consulta->amount;
 
                 $consulta->update(['amount' => $actualAmount + 1]);
-                return response()->json("Adicionado mais um do produto selecionado no carrinho");
+                return response()->json(["success" => "Adicionado mais um do produto selecionado no carrinho"]);
             } else {
                 Cart::create([
                     'user_id' => $userId,
@@ -59,17 +59,17 @@ class APICarrinhoPedidos extends Controller
                     'amount' => 1
                 ]);
 
-                return response()->json("Adicionado o produto selecionado no carrinho");
+                return response()->json(["success" => "Adicionado o produto selecionado no carrinho"]);
             }
         } else {
-            return response()->json("Produto inválido", 404);
+            return response()->json(["error" => "Produto inválido"], 404);
         }
     }
 
     public function destroyOneProductCart(Request $request)
     {
         if (!$request->product_id) {
-            return response()->json("Requisição com corpo incompleto");
+            return response()->json(["error" => "Requisição com corpo incompleto"], 400);
         }
 
         $userId = auth()->user()->id;
@@ -80,7 +80,7 @@ class APICarrinhoPedidos extends Controller
             ->first();
 
         if ($consulta == null) {
-            return response()->json("Carrinho não encontrado");
+            return response()->json(["error" => "Carrinho não encontrado"], 404);
         }
 
         if ($consulta->amount > 1) {
@@ -91,7 +91,7 @@ class APICarrinhoPedidos extends Controller
             $consulta->delete();
         }
 
-        return response()->json("Produto removido do carrinho com sucesso");
+        return response()->json(["success" => "Produto removido do carrinho com sucesso"]);
     }
 
     public function removeAllCart()
@@ -99,7 +99,7 @@ class APICarrinhoPedidos extends Controller
         $userId = auth()->user()->id;
         $this->deleteData($userId);
 
-        return response()->json("Carrinho limpo com sucesso");
+        return response()->json(["success" => "Carrinho limpo com sucesso"]);
     }
 
     private function deleteData(int $userId)
@@ -123,7 +123,7 @@ class APICarrinhoPedidos extends Controller
             $stock = $actualProd->stock;
 
             if ($prod->amount > $stock) {
-                return response()->json('O produto ' . $actualProd->name . ' não tem estoque, só há ' . $stock . ' no estoque.', 303);
+                return response()->json(["success" => "O produto ' . $actualProd->name . ' não tem estoque, só há ' . $stock . ' no estoque."], 303);
             }
         }
 
@@ -136,7 +136,7 @@ class APICarrinhoPedidos extends Controller
         // REMOVE PRODUTOS DO CARRINHO
         $this->deleteData($userId);
 
-        return response()->json("Parabéns! Compra finalizada com sucesso!");
+        return response()->json(["success" => "Parabéns! Compra finalizada com sucesso!"]);
     }
 
     private function searchAndInsertInOrderProductTable(int $userId, int $orderId)

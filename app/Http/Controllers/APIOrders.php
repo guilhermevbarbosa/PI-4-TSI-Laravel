@@ -26,11 +26,10 @@ class APIOrders extends Controller
         if ($orders->count() > 0) {
             return response()->json($orders);
         } else {
-            return response()->json("Você ainda não comprou nada");
+            return response()->json(["error" => "Você ainda não comprou nada"], 300);
         }
     }
 
-    // ************
     public function showProductsInOrder($id)
     {
         // Pega os produtos do pedido
@@ -56,5 +55,4 @@ class APIOrders extends Controller
             'totalPrice' => $totalPrice,
         ]);
     }
-    // ************
 }

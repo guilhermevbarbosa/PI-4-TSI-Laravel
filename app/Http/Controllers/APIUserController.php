@@ -13,13 +13,13 @@ class APIUserController extends Controller
     public function login(Request $request)
     {
         if (!$request->email || !$request->password || !$request->device_name) {
-            return response()->json('Verifique os dados da consulta e tente novamente', 400);
+            return response()->json(["error" => "Verifique os dados da consulta e tente novamente"], 400);
         }
 
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json('Credenciais incorretas', 400);
+            return response()->json(["error" => "Credenciais incorretas"], 400);
         }
 
         return response()->json([
@@ -32,21 +32,21 @@ class APIUserController extends Controller
     public function logout(Request $request)
     {
         if ($request->user()->tokens()->delete()) {
-            return response()->json('Deslogado com sucesso');
+            return response()->json(["success" => "Deslogado com sucesso"]);
         } else {
-            return response()->json('Erro ao deslogar', 400);
+            return response()->json(["error" => "Erro ao deslogar"], 400);
         }
     }
 
     public function register(Request $request)
     {
         if (!$request->name || !$request->email || !$request->password) {
-            return response()->json('Verifique os dados da consulta e tente novamente', 400);
+            return response()->json(["error" => "Verifique os dados da consulta e tente novamente"], 400);
         }
 
         $user = User::where('email', $request->email);
         if ($user->count() > 0) {
-            return response()->json('O e-mail existe no banco de dados', 400);
+            return response()->json(["error" => "O e-mail existe no banco de dados"], 400);
         }
 
         $user = User::create([
@@ -67,12 +67,12 @@ class APIUserController extends Controller
         if ($loggedUser->hasRole('admin')) {
 
             if (!$request->name || !$request->email || !$request->password) {
-                return response()->json('Verifique os dados da consulta e tente novamente', 400);
+                return response()->json(["error" => "Verifique os dados da consulta e tente novamente"], 400);
             }
 
             $user = User::where('email', $request->email);
             if ($user->count() > 0) {
-                return response()->json('O e-mail existe no banco de dados', 400);
+                return response()->json(["error" => "O e-mail existe no banco de dados"], 400);
             }
 
             $user = User::create([
@@ -89,7 +89,7 @@ class APIUserController extends Controller
             ]);
         }
 
-        return response()->json('Acesso negado', 303);
+        return response()->json(["error" => "Acesso negado"], 303);
     }
 
     // Cadastrar e atualizar endereço
@@ -106,7 +106,7 @@ class APIUserController extends Controller
             !$request->city ||
             !$request->state
         ) {
-            return response()->json('Verifique os dados da consulta e tente novamente', 400);
+            return response()->json(["error" => "Verifique os dados da requisição e tente novamente"], 400);
         }
 
         if ($search->count() > 0) {
@@ -120,7 +120,7 @@ class APIUserController extends Controller
                 'user_id' => $loggedUser,
             ]);
 
-            return response()->json('Endereco Atualizado com sucesso');
+            return response()->json(["success" => "Endereco Atualizado com sucesso"]);
         } else {
             $address = Address::create([
                 'cep' => $request->cep,

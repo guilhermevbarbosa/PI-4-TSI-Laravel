@@ -16,7 +16,7 @@ class APIController extends Controller
             return response()->json($products);
         }
 
-        return response()->json('Produtos não encontrados', 404);
+        return response()->json(["error" => "Produtos não encontrados", 404]);
     }
 
     // Produtos pelo maior desconto
@@ -28,7 +28,7 @@ class APIController extends Controller
             return response()->json($products);
         }
 
-        return response()->json('Produtos não encontrados', 404);
+        return response()->json(["error" => "Produtos não encontrados", 404]);
     }
 
     // Get one product with id
@@ -40,7 +40,7 @@ class APIController extends Controller
             return response()->json($product);
         }
 
-        return response()->json('Produto não encontrado', 404);
+        return response()->json(["error" => "Produto não encontrado", 404]);
     }
 
     // Pesquisa por produto na barra de pesquisa
@@ -52,7 +52,7 @@ class APIController extends Controller
             return response()->json($products);
         }
 
-        return response()->json('Não há produtos encontrados com o termo pesquisado', 404);
+        return response()->json(["error" => "Não há produtos encontrados com o termo pesquisado", 404]);
     }
 
     // Get all categories
@@ -64,7 +64,7 @@ class APIController extends Controller
             return response()->json($category);
         }
 
-        return response()->json('Categorias não encontradas', 404);
+        return response()->json(["error" => "Categorias não encontradas", 404]);
     }
 
     // Get all Products in specific category
@@ -76,6 +76,6 @@ class APIController extends Controller
             return response()->json($products);
         }
 
-        return response()->json('Produtos não encontrados na categoria pesquisada', 404);
+        return response()->json(["error" => "Produtos não encontrados na categoria pesquisada", 404]);
     }
 }
