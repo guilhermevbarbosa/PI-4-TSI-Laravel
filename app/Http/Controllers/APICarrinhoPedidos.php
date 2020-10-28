@@ -151,7 +151,7 @@ class APICarrinhoPedidos extends Controller
             OrderProduct::create([
                 'order_id' => $orderId,
                 'product_id' => $actualProd->id,
-                'price' => $actualProd->price * ($actualProd->discount / 100) * $prod->amount,
+                'price' => $actualProd->price - ($actualProd->price * ($actualProd->discount / 100) * $prod->amount),
                 'amount' => $prod->amount
             ]);
 
