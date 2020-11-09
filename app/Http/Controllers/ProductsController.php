@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\EditProductRequest;
 
+use Illuminate\Support\Facades\Storage;
+
 class ProductsController extends Controller
 {
     public function __construct()
@@ -28,15 +30,12 @@ class ProductsController extends Controller
     public function store(CreateProductRequest $request)
     {
         $file = $request->file("image");
-
-        $data = file_get_contents($file);
-        $encode64 = base64_encode($data);
-        $base64Img  = "data:image/jpeg;base64,$encode64";
+        $image = $file->store('products');
 
         Product::create([
             'name' => $request->name,
             'description' => $request->description,
-            'image' => $base64Img,
+            'image' => $image,
             'price' => $request->price,
             'discount' => $request->discount,
             'stock' => $request->stock,
@@ -62,12 +61,11 @@ class ProductsController extends Controller
         $file = $request->file("image");
 
         if (!empty($file)) {
-            $data = file_get_contents($file);
-            $encode64 = base64_encode($data);
-            $base64Img = "data:image/jpeg;base64,$encode64";
+            Storage::delete($product->image);
+            $image = $file->store('products');
 
             $product->update([
-                'image' => $base64Img
+                'image' => $image
             ]);
         }
 

@@ -74,7 +74,7 @@
         <div class="w-full mb-6">
             <label class='uppercase text-teal-700 font-bold text-base' for="image">Imagem atual</label>
 
-            <img src="{{$product->image}}">
+            <img src="{{ asset('storage/' .$product->image) }}">
         </div>
 
         <div class="w-full mb-6">
