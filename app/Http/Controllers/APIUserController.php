@@ -13,20 +13,37 @@ class APIUserController extends Controller
     public function login(Request $request)
     {
         if (!$request->email || !$request->password || !$request->device_name) {
-            return response()->json(["error" => "Verifique os dados da consulta e tente novamente"], 400);
+            $retorno = [
+                "status" => "Erro",
+                "message" => "Verifique os dados da consulta e tente novamente",
+                "id" => null,
+                "token" => null
+            ];
+
+            return response()->json($retorno);
         }
 
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(["error" => "Credenciais incorretas"], 400);
+            $retorno = [
+                "status" => "Erro",
+                "message" => "Credenciais incorretas",
+                "id" => null,
+                "token" => null
+            ];
+
+            return response()->json($retorno);
         }
 
-        return response()->json([
-            'user' => $user,
-            'permission' => $user->getRoleNames(),
-            'token' => $user->createToken($request->device_name)->plainTextToken
-        ]);
+        $retorno = [
+            "status" => "Sucesso",
+            "message" => "Logado com sucesso " . $user->email,
+            "id" => $user->id,
+            "token" => $user->createToken($request->device_name)->plainTextToken
+        ];
+
+        return response()->json($retorno);
     }
 
     public function logout(Request $request)
@@ -41,7 +58,6 @@ class APIUserController extends Controller
     public function register(Request $request)
     {
         if (!$request->name || !$request->email || !$request->password) {
-
             $retorno = [
                 "status" => "Erro",
                 "message" => "Verifique os dados da consulta e tente novamente"
