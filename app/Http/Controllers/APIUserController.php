@@ -41,12 +41,23 @@ class APIUserController extends Controller
     public function register(Request $request)
     {
         if (!$request->name || !$request->email || !$request->password) {
-            return response()->json(["error" => "Verifique os dados da consulta e tente novamente"], 400);
+
+            $retorno = [
+                "status" => "Erro",
+                "message" => "Verifique os dados da consulta e tente novamente"
+            ];
+
+            return response()->json($retorno);
         }
 
         $user = User::where('email', $request->email);
         if ($user->count() > 0) {
-            return response()->json(["error" => "O e-mail existe no banco de dados"], 400);
+            $retorno = [
+                "status" => "Erro",
+                "message" => "O e-mail existe no banco de dados"
+            ];
+
+            return response()->json($retorno);
         }
 
         $user = User::create([
@@ -57,7 +68,12 @@ class APIUserController extends Controller
 
         $user->assignRole('client');
 
-        return response()->json($user);
+        $retorno = [
+            "status" => "Sucesso",
+            "message" => "Conta criada com sucesso"
+        ];
+
+        return response()->json($retorno);
     }
 
     public function createAdmin(Request $request)
