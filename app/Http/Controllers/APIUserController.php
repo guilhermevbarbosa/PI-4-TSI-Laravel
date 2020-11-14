@@ -203,7 +203,12 @@ class APIUserController extends Controller
                 'user_id' => $loggedUser,
             ]);
 
-            return response()->json(["success" => "Endereco Atualizado com sucesso"]);
+            $retorno = [
+                "status" => "Sucesso",
+                "message" => "Endereco atualizado com sucesso"
+            ];
+
+            return response()->json($retorno);
         } else {
             $address = Address::create([
                 'cep' => $request->cep,
@@ -215,7 +220,12 @@ class APIUserController extends Controller
                 'user_id' => $loggedUser,
             ]);
 
-            return response()->json($address);
+            $retorno = [
+                "status" => "Sucesso",
+                "message" => "Endereco cadastrado com sucesso"
+            ];
+
+            return response()->json($retorno);
         }
     }
 
@@ -223,6 +233,26 @@ class APIUserController extends Controller
     public function getAddress(Request $request)
     {
         $address = $request->user()->Address;
-        return response()->json($address);
+        if ($address == null) {
+            $retorno = [
+                "cep" => null,
+                "h_address" => null,
+                "h_number" => null,
+                "neighborhood" => null,
+                "city" => null,
+                "state" => null,
+            ];
+        } else {
+            $retorno = [
+                "cep" => $address->cep,
+                "h_address" => $address->h_address,
+                "h_number" => $address->h_number,
+                "neighborhood" => $address->neighborhood,
+                "city" => $address->city,
+                "state" => $address->state,
+            ];
+        }
+
+        return response()->json($retorno);
     }
 }
