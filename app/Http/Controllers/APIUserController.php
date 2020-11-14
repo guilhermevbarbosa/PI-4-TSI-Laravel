@@ -49,9 +49,19 @@ class APIUserController extends Controller
     public function logout(Request $request)
     {
         if ($request->user()->tokens()->delete()) {
-            return response()->json(["success" => "Deslogado com sucesso"]);
+            $retorno = [
+                "status" => "Sucesso",
+                "message" => "Deslogado com sucesso"
+            ];
+
+            return response()->json($retorno);
         } else {
-            return response()->json(["error" => "Erro ao deslogar"], 400);
+            $retorno = [
+                "status" => "Erro",
+                "message" => "Erro ao deslogar"
+            ];
+
+            return response()->json($retorno);
         }
     }
 
