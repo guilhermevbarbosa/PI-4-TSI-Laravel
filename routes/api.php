@@ -32,19 +32,23 @@ Route::get('/category/{id}', [APIController::class, 'showProductsInCategory']);
 // ROTAS PARA AUTENTICAR
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/logout', [APIUserController::class, 'logout']);
-
+    
     Route::post('/address', [APIUserController::class, 'handleAddress']);
     Route::get('/address', [APIUserController::class, 'getAddress']);
-
+    
     Route::post('/new-admin', [APIUserController::class, 'createAdmin']);
-
+    
     Route::get('/carrinho', [APICarrinhoPedidos::class, 'returnCart']);
     Route::post('/carrinho', [APICarrinhoPedidos::class, 'storeOneProductCart']);
     Route::get('/checkout', [APICarrinhoPedidos::class, 'checkout']);
-
+    
     Route::post('/remove-prod', [APICarrinhoPedidos::class, 'destroyOneProductCart']);
     Route::get('/clean-cart', [APICarrinhoPedidos::class, 'removeAllCart']);
-
+    
     Route::get('/my-orders', [APIOrders::class, 'getMyOrders']);
     Route::get('/order/{id}', [APIOrders::class, 'showProductsInOrder']);
+    
+    
+    Route::get('/my-data', [APIUserController::class, 'getUser']);
+    Route::post('/edit-data', [APIUserController::class, 'editUser']);
 });

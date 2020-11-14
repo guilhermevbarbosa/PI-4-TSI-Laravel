@@ -55,6 +55,47 @@ class APIUserController extends Controller
         }
     }
 
+    public function getUser(Request $request)
+    {
+        $retorno = [
+            "name" => $request->user()->name,
+            "email" => $request->user()->email
+        ];
+
+        return response()->json($retorno);
+    }
+
+    public function editUser(Request $request)
+    {
+        $search = User::where('id', $request->user()->id)->first();
+
+        // Quando email já existe no banco
+        $searchEmailId = User::where('email', $request->email)->first();
+
+        if ($searchEmailId !== null) {
+            if ($searchEmailId->id !== $request->user()->id) {
+                $retorno = [
+                    "status" => "Erro",
+                    "message" => "O email já está cadastrado"
+                ];
+
+                return response()->json($retorno);
+            }
+        }
+
+        $search->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        $retorno = [
+            "status" => "Sucesso",
+            "message" => "Perfil atualizado com sucesso"
+        ];
+
+        return response()->json($retorno);
+    }
+
     public function register(Request $request)
     {
         if (!$request->name || !$request->email || !$request->password) {
