@@ -176,7 +176,7 @@ class APIUserController extends Controller
     }
 
     // Cadastrar e atualizar endereço
-    public function handleAddress(Request $request, Address $add)
+    public function handleAddress(Request $request)
     {
         $loggedUser = $request->user()->id;
         $search = Address::where('user_id', $loggedUser);
@@ -193,7 +193,7 @@ class APIUserController extends Controller
         }
 
         if ($search->count() > 0) {
-            $add->update([
+            $search->update([
                 'cep' => $request->cep,
                 'h_address' => $request->h_address,
                 'h_number' => $request->h_number,
@@ -205,7 +205,7 @@ class APIUserController extends Controller
 
             $retorno = [
                 "status" => "Sucesso",
-                "message" => "Endereco atualizado com sucesso"
+                "message" => "Endereço atualizado com sucesso"
             ];
 
             return response()->json($retorno);
