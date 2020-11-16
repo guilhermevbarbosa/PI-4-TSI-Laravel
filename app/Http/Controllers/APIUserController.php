@@ -235,6 +235,7 @@ class APIUserController extends Controller
         $address = $request->user()->Address;
         if ($address == null) {
             $retorno = [
+                "status" => "Novo",
                 "cep" => null,
                 "h_address" => null,
                 "h_number" => null,
@@ -244,6 +245,7 @@ class APIUserController extends Controller
             ];
         } else {
             $retorno = [
+                "status" => "Cadastrado",
                 "cep" => $address->cep,
                 "h_address" => $address->h_address,
                 "h_number" => $address->h_number,
