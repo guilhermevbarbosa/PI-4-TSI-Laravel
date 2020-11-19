@@ -33,36 +33,48 @@ class APICarrinhoPedidos extends Controller
 
     public function storeOneProductCart(Request $request)
     {
-        if (!$request->product_id) {
-            return response()->json(["error" => "Requisição com corpo incompleto"], 400);
-        }
-
-        $productIsValid = Product::all()->where('id', $request->product_id)->count();
+        $productIsValid = Product::all()->where('id', $request->prodId)->count();
 
         if ($productIsValid > 0) {
             $userId = auth()->user()->id;
 
             $consulta = Cart::all()
                 ->where('user_id', $userId)
-                ->where('product_id', $request->product_id)
+                ->where('product_id', $request->prodId)
                 ->first();
 
             if ($consulta) {
                 $actualAmount = $consulta->amount;
 
                 $consulta->update(['amount' => $actualAmount + 1]);
-                return response()->json(["success" => "Adicionado mais um do produto selecionado no carrinho"]);
+
+                $retorno = [
+                    "status" => "Sucesso",
+                    "message" => "Adicionado mais um do produto ao carrinho"
+                ];
+
+                return response()->json($retorno);
             } else {
                 Cart::create([
                     'user_id' => $userId,
-                    'product_id' => $request->product_id,
+                    'product_id' => $request->prodId,
                     'amount' => 1
                 ]);
 
-                return response()->json(["success" => "Adicionado o produto selecionado no carrinho"]);
+                $retorno = [
+                    "status" => "Sucesso",
+                    "message" => "Produto adicionado ao carrinho"
+                ];
+
+                return response()->json($retorno);
             }
         } else {
-            return response()->json(["error" => "Produto inválido"], 404);
+            $retorno = [
+                "status" => "Erro",
+                "message" => "Produto inválido"
+            ];
+
+            return response()->json($retorno);
         }
     }
 

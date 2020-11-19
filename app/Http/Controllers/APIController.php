@@ -35,12 +35,27 @@ class APIController extends Controller
     public function showProduct($id)
     {
         $product = Product::find($id);
-
+        
         if ($product) {
-            return response()->json($product);
+            $retorno = [
+                "id" => $product->id,
+                "name" => $product->name,
+                "description" => $product->description,
+                "image" => $product->image,
+                "price" => $product->price,
+                "discount" => $product->discount,
+                "category" => $product->Category->name
+            ];
+
+            return response()->json($retorno);
         }
 
-        return response()->json(["error" => "Produto não encontrado", 404]);
+        $retorno = [
+            "status" => "Erro",
+            "message" => "Produto não encontrado",
+        ];
+
+        return response()->json($retorno);
     }
 
     // Pesquisa por produto na barra de pesquisa
