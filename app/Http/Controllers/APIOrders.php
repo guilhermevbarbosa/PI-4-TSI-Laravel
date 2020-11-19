@@ -24,6 +24,7 @@ class APIOrders extends Controller
         $orders = $this->getUserOrders($userId)->sortByDesc('created_at');
 
         if ($orders->count() > 0) {
+            $orders = $this->removeIndex($orders);
             return response()->json($orders);
         } else {
             return response()->json(["error" => "Você ainda não comprou nada"], 300);
@@ -54,5 +55,16 @@ class APIOrders extends Controller
             'amount' => $amountDB,
             'totalPrice' => $totalPrice,
         ]);
+    }
+
+    private function removeIndex($result)
+    {
+        $resp = [];
+
+        foreach ($result as $res) {
+            array_push($resp, $res);
+        }
+
+        return $resp;
     }
 }
