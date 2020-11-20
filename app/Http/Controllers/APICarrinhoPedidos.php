@@ -21,8 +21,24 @@ class APICarrinhoPedidos extends Controller
             $products = [];
 
             foreach ($cart as $product) {
-                $forProd = Product::all()->find($product->product_id);
-                array_push($products, $forProd);
+                $produto = Product::withTrashed()->find($product->product_id);
+
+                $image = $produto->image;
+                $name = $produto->name;
+                $price = $produto->price;
+
+                $amount = $product->amount;
+                $totalPriceThisProduct = $price * $amount;
+
+                $array = [
+                    "image" => $image,
+                    "name" => $name,
+                    "price" => $price,
+                    "amount" => $amount,
+                    "totalThis" => $totalPriceThisProduct
+                ];
+
+                array_push($products, $array);
             }
 
             return response()->json($products);
