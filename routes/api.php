@@ -48,7 +48,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/my-orders', [APIOrders::class, 'getMyOrders']);
     Route::get('/order/{id}', [APIOrders::class, 'showProductsInOrder']);
     
-    
     Route::get('/my-data', [APIUserController::class, 'getUser']);
     Route::post('/edit-data', [APIUserController::class, 'editUser']);
 });

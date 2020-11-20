@@ -18,6 +18,34 @@ class APIOrders extends Controller
         return OrderProduct::all()->where('order_id', $id);
     }
 
+    public function showProductsInOrder($id)
+    {
+        // Pega os produtos do pedido
+        $orderProducts = $this->getOrderProducts($id);
+        $jsonFinal = [];
+
+        foreach ($orderProducts as $product) {
+            // Pega o produto completo contido em Product
+            $produto = Product::withTrashed()->find($product->product_id);
+
+            $image = $produto->image;
+            $name = $produto->name;
+            $price = $product->price;
+            $amount = $product->amount;
+
+            $array = [
+                "image" => $image,
+                "name" => $name,
+                "price" => $price,
+                "amount" => $amount
+            ];
+
+            array_push($jsonFinal, $array);
+        }
+
+        return response()->json($jsonFinal);
+    }
+
     public function getMyOrders()
     {
         $userId = auth()->user()->id;
@@ -29,32 +57,6 @@ class APIOrders extends Controller
         } else {
             return response()->json(["error" => "Você ainda não comprou nada"], 300);
         }
-    }
-
-    public function showProductsInOrder($id)
-    {
-        // Pega os produtos do pedido
-        $orderProducts = $this->getOrderProducts($id);
-
-        // Soma os valores dos produtos do pedido
-        $totalPrice = number_format($orderProducts->sum('price'), 2, ',', '');
-
-        foreach ($orderProducts as $product) {
-            // Pega o produto completo contido em Product
-            $clientProds[] = Product::withTrashed()->find($product->product_id);
-
-            // Pega o preço contido em OrderProduct
-            $priceDB[] = $product->price;
-            // Pega a quantidade contida em OrderProduct
-            $amountDB[] = $product->amount;
-        }
-
-        return response()->json([
-            'products' => $clientProds,
-            'price' => $priceDB,
-            'amount' => $amountDB,
-            'totalPrice' => $totalPrice,
-        ]);
     }
 
     private function removeIndex($result)
