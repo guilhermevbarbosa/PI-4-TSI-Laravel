@@ -23,6 +23,7 @@ class APICarrinhoPedidos extends Controller
             foreach ($cart as $product) {
                 $produto = Product::withTrashed()->find($product->product_id);
 
+                $id = $produto->id;
                 $image = $produto->image;
                 $name = $produto->name;
                 $price = $produto->price;
@@ -31,6 +32,7 @@ class APICarrinhoPedidos extends Controller
                 $totalPriceThisProduct = $price * $amount;
 
                 $array = [
+                    "id" => $id,
                     "image" => $image,
                     "name" => $name,
                     "price" => $price,
@@ -96,20 +98,12 @@ class APICarrinhoPedidos extends Controller
 
     public function destroyOneProductCart(Request $request)
     {
-        if (!$request->product_id) {
-            return response()->json(["error" => "Requisição com corpo incompleto"], 400);
-        }
-
         $userId = auth()->user()->id;
 
         $consulta = Cart::all()
             ->where('user_id', $userId)
-            ->where('product_id', $request->product_id)
+            ->where('product_id', $request->prodId)
             ->first();
-
-        if ($consulta == null) {
-            return response()->json(["error" => "Carrinho não encontrado"], 404);
-        }
 
         if ($consulta->amount > 1) {
             $actualAmount = $consulta->amount;
@@ -119,7 +113,12 @@ class APICarrinhoPedidos extends Controller
             $consulta->delete();
         }
 
-        return response()->json(["success" => "Produto removido do carrinho com sucesso"]);
+        $retorno = [
+            "status" => "Sucesso",
+            "message" => "Produto removido do carrinho"
+        ];
+
+        return response()->json($retorno);
     }
 
     public function removeAllCart()
