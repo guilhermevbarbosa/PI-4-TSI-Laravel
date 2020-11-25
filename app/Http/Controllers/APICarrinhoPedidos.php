@@ -150,7 +150,12 @@ class APICarrinhoPedidos extends Controller
             $stock = $actualProd->stock;
 
             if ($prod->amount > $stock) {
-                return response()->json(["success" => "O produto ' . $actualProd->name . ' não tem estoque, só há ' . $stock . ' no estoque."], 303);
+                $retorno = [
+                    "status" => "Erro",
+                    "message" => "O produto ' . $actualProd->name . ' não tem estoque, só há ' . $stock . ' no estoque."
+                ];
+
+                return response()->json($retorno);
             }
         }
 
@@ -163,7 +168,12 @@ class APICarrinhoPedidos extends Controller
         // REMOVE PRODUTOS DO CARRINHO
         $this->deleteData($userId);
 
-        return response()->json(["success" => "Parabéns! Compra finalizada com sucesso!"]);
+        $retorno = [
+            "status" => "Sucesso",
+            "message" => "Parabéns! Compra finalizada com sucesso!"
+        ];
+
+        return response()->json($retorno);
     }
 
     private function searchAndInsertInOrderProductTable(int $userId, int $orderId)

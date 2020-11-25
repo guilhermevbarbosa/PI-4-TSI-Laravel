@@ -30,8 +30,8 @@ class APIOrders extends Controller
 
             $image = $produto->image;
             $name = $produto->name;
-            $price = $product->price;
             $amount = $product->amount;
+            $price = ($product->price) * $amount;
 
             $array = [
                 "image" => $image,
