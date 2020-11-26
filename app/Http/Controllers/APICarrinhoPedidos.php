@@ -27,9 +27,12 @@ class APICarrinhoPedidos extends Controller
                 $image = $produto->image;
                 $name = $produto->name;
                 $price = $produto->price;
+                
+                $discount = $price * ($produto->discount / 100);
+                $priceWithDiscount = $price - $discount;
 
                 $amount = $product->amount;
-                $totalPriceThisProduct = $price * $amount;
+                $totalPriceThisProduct = $priceWithDiscount * $amount;
 
                 $array = [
                     "id" => $id,
@@ -184,11 +187,14 @@ class APICarrinhoPedidos extends Controller
         foreach ($orderItens as $prod) {
             $actualProd = Product::find($prod->product_id);
 
+            $discount = $actualProd->price * ($actualProd->discount / 100);
+            $priceWithDiscount = $actualProd->price - $discount;
+
             // CRIA O REGISTRO NA TABELA ORDER_PRODUCT
             OrderProduct::create([
                 'order_id' => $orderId,
                 'product_id' => $actualProd->id,
-                'price' => $actualProd->price - ($actualProd->price * ($actualProd->discount / 100) * $prod->amount),
+                'price' => $priceWithDiscount,
                 'amount' => $prod->amount
             ]);
 
